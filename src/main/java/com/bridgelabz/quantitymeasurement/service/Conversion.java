@@ -11,12 +11,15 @@ import java.util.stream.Collectors;
 @Service
 public class Conversion {
 
-    public double getConvert(QuantityMeasurementDTO quantityMeasurementDTO) {
-        if (quantityMeasurementDTO.firstUnit.equals(UnitType.FARHANHIT)
-                || quantityMeasurementDTO.firstUnit.equals(UnitType.CELCIUS)) {
+    public double getConvert(QuantityMeasurementDTO quantityMeasurementDTO) throws QuantityMeasurementException {
+        if ((quantityMeasurementDTO.firstUnit.equals(UnitType.FARHANHIT)
+                || quantityMeasurementDTO.firstUnit.equals(UnitType.CELCIUS)) && quantityMeasurementDTO.firstUnit.unitType.equals(quantityMeasurementDTO.secondUnit.unitType)) {
             return new TemperatureConverter().getTempConvert(quantityMeasurementDTO);
         }
-        return quantityMeasurementDTO.value1 * quantityMeasurementDTO.firstUnit.val / quantityMeasurementDTO.secondUnit.val;
+        if (quantityMeasurementDTO.firstUnit.unitType.equals(quantityMeasurementDTO.secondUnit.unitType)) {
+            return quantityMeasurementDTO.value1 * quantityMeasurementDTO.firstUnit.val / quantityMeasurementDTO.secondUnit.val;
+        }
+        throw new QuantityMeasurementException("Invalid Unit Type");
     }
 
     public List getEnum(String unitType) {

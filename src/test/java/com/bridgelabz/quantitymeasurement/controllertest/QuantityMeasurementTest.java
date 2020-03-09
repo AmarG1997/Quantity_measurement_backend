@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -52,13 +52,45 @@ public class QuantityMeasurementTest {
     }
 
     @Test
-    void givenANullValueRequest_thenReturnBadRequestStatus() throws Exception {
-        quantityMeasurementDTO = new QuantityMeasurementDTO(2.00, null, UnitType.CM);
+    void whenGivenDifferentUnitType_shouldReturnException() throws Exception {
+        quantityMeasurementDTO=new QuantityMeasurementDTO(2.0,UnitType.INCH,UnitType.FARHANHIT);
         String jsonDto = gson.toJson(quantityMeasurementDTO);
         when(unitConverter.getConvert(quantityMeasurementDTO)).thenReturn(2.0);
         MvcResult mvcResult = this.mockMvc.perform(post("/unitConverter").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(400,status);
+    }
+
+    @Test
+    void givenARequest_thenReturnOkRequestStatusCode() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get("/getUnit")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(200, status);
+    }
+
+    @Test
+    void givenAWrongTypeRequest_thenReturnBadStatusCode() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(post("/getUnit")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(405, status);
+    }
+
+    @Test
+    void givenARequest_thenReturnOkStatusCode() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get("/{}")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(200, status);
+    }
+
+    @Test
+    void givenABadUrl_thenReturnBadRequestCode() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get("/")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(404, status);
     }
 }

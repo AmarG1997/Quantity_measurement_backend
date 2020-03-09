@@ -1,10 +1,13 @@
 package com.bridgelabz.quantitymeasurement.controller;
 
 import com.bridgelabz.quantitymeasurement.dto.QuantityMeasurementDTO;
+import com.bridgelabz.quantitymeasurement.exception.QuantityMeasurementException;
 import com.bridgelabz.quantitymeasurement.service.Conversion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -15,23 +18,23 @@ public class QuantityMeasurementController {
     Conversion conversion;
 
     @PostMapping("/unitConverter")
-    public double getResult(@RequestBody QuantityMeasurementDTO quantityMeasurementDTO) {
+    public double getResult(@RequestBody @Valid QuantityMeasurementDTO quantityMeasurementDTO , BindingResult result) throws QuantityMeasurementException {
+        if (result.hasErrors()){
+            throw new QuantityMeasurementException("Enter A Valid Unit Types");
+        }
         double val = conversion.getConvert(quantityMeasurementDTO);
         return val;
     }
 
     @GetMapping("{unit}")
     public List getUnitValues(@PathVariable String unit){
-        System.out.println("in backend-->"+unit);
         List anEnum = conversion.getEnum(unit);
-        System.out.println("in database "+anEnum);
         return anEnum;
     }
 
     @GetMapping("/getUnit")
     public List getUnit(){
         List unit = conversion.getUnit();
-        System.out.println("REsponse from backend"+unit);
         return unit;
     }
 }

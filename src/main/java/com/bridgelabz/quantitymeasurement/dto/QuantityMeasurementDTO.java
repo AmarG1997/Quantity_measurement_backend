@@ -4,12 +4,16 @@ import com.bridgelabz.quantitymeasurement.service.UnitType;
 
 import javax.validation.constraints.NotNull;
 
+
 public class QuantityMeasurementDTO {
 
+    @NotNull
     public double value1;
-    @NotNull(message = "Enter UnitType")
+
+    @NotNull
     public UnitType firstUnit;
-    @NotNull(message = "Enter UnitType")
+
+    @NotNull
     public UnitType secondUnit;
 
     public QuantityMeasurementDTO(double value1, UnitType firstUnit, UnitType secondUnit) {
