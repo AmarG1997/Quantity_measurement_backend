@@ -35,7 +35,7 @@ public class QuantityMeasurementControllerTest {
     void givenARequest_thenReturnOkRequestStatus() throws Exception {
         quantityMeasurementDTO = new QuantityMeasurementDTO(2.00, UnitType.CM, UnitType.CM);
         String jsonDto = gson.toJson(quantityMeasurementDTO);
-        MvcResult mvcResult = this.mockMvc.perform(post("/unitConverter").content(jsonDto)
+        MvcResult mvcResult = this.mockMvc.perform(post("/unit/convert").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(200, status);
@@ -45,7 +45,7 @@ public class QuantityMeasurementControllerTest {
     void givenARequest_thenReturnBadRequestStatus() throws Exception {
         quantityMeasurementDTO = new QuantityMeasurementDTO(2.00, null, UnitType.CM);
         when(unitConverter.getConvert(quantityMeasurementDTO)).thenReturn(2.0);
-        MvcResult mvcResult = this.mockMvc.perform(post("/unitConverter").content(quantityMeasurementDTO.toString())
+        MvcResult mvcResult = this.mockMvc.perform(post("/unit/convert").content(quantityMeasurementDTO.toString())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(400, status);
@@ -56,7 +56,7 @@ public class QuantityMeasurementControllerTest {
         quantityMeasurementDTO=new QuantityMeasurementDTO(2.0,UnitType.INCH,UnitType.FARHANHIT);
         String jsonDto = gson.toJson(quantityMeasurementDTO);
         when(unitConverter.getConvert(quantityMeasurementDTO)).thenReturn(2.0);
-        MvcResult mvcResult = this.mockMvc.perform(post("/unitConverter").content(jsonDto)
+        MvcResult mvcResult = this.mockMvc.perform(post("/unit/convert").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(400,status);
@@ -64,7 +64,7 @@ public class QuantityMeasurementControllerTest {
 
     @Test
     void givenARequest_thenReturnOkRequestStatusCode() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/getUnit")
+        MvcResult mvcResult = this.mockMvc.perform(get("/unit/unitType")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(200, status);
@@ -72,7 +72,7 @@ public class QuantityMeasurementControllerTest {
 
     @Test
     void givenAWrongTypeRequest_thenReturnBadStatusCode() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(post("/getUnit")
+        MvcResult mvcResult = this.mockMvc.perform(post("/unit/unitType")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(405, status);
@@ -80,7 +80,7 @@ public class QuantityMeasurementControllerTest {
 
     @Test
     void givenARequest_thenReturnOkStatusCode() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/{}")
+        MvcResult mvcResult = this.mockMvc.perform(get("/unit/subUnit/LENGTH")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(200, status);
