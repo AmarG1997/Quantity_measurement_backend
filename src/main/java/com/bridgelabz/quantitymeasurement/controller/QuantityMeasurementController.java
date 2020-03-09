@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
-@RestController
+@CrossOrigin(origins = "*")
+@RestController()
+@RequestMapping("/unit")
 public class QuantityMeasurementController {
 
     @Autowired
     IUnitConversion unitConversion;
 
-    @PostMapping("/unitConverter")
+    @PostMapping("/convert")
     public double getResult(@RequestBody @Valid QuantityMeasurementDTO quantityMeasurementDTO , BindingResult result) throws QuantityMeasurementException {
         if (result.hasErrors()){
             throw new QuantityMeasurementException("Enter A Valid Unit Types");
@@ -26,13 +27,13 @@ public class QuantityMeasurementController {
         return val;
     }
 
-    @GetMapping("{unit}")
+    @GetMapping("/subUnit/{unit}")
     public List getSubUnitValues(@PathVariable String unit){
         List anEnum = unitConversion.getEnum(unit);
         return anEnum;
     }
 
-    @GetMapping("/getUnit")
+    @GetMapping("/unitType")
     public List getUnit(){
         List unit = unitConversion.getUnit();
         return unit;
