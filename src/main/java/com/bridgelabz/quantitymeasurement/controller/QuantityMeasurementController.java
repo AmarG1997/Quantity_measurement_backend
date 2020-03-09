@@ -27,7 +27,7 @@ public class QuantityMeasurementController {
     }
 
     @GetMapping("{unit}")
-    public List getUnitValues(@PathVariable String unit){
+    public List getSubUnitValues(@PathVariable String unit){
         List anEnum = conversion.getEnum(unit);
         return anEnum;
     }
