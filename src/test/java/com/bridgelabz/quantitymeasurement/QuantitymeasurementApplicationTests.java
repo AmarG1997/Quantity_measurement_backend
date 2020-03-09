@@ -1,6 +1,6 @@
 package com.bridgelabz.quantitymeasurement;
 
-import com.bridgelabz.quantitymeasurement.service.Conversion;
+import com.bridgelabz.quantitymeasurement.service.UnitConversion;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class QuantitymeasurementApplicationTests {
 
     @Mock
-    Conversion unitConverter;
+    UnitConversion unitConverter;
 
 
 }

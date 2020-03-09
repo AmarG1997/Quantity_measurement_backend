@@ -1,7 +1,7 @@
 package com.bridgelabz.quantitymeasurement.controllertest;
 
 import com.bridgelabz.quantitymeasurement.dto.QuantityMeasurementDTO;
-import com.bridgelabz.quantitymeasurement.service.Conversion;
+import com.bridgelabz.quantitymeasurement.service.UnitConversion;
 import com.bridgelabz.quantitymeasurement.service.UnitType;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -26,7 +26,7 @@ public class QuantityMeasurementControllerTest {
     MockMvc mockMvc;
 
     @Mock
-    Conversion unitConverter;
+    UnitConversion unitConverter;
 
     QuantityMeasurementDTO quantityMeasurementDTO;
     Gson gson = new Gson();

@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class Conversion {
+public class UnitConversion implements IUnitConversion {
 
+    @Override
     public double getConvert(QuantityMeasurementDTO quantityMeasurementDTO) throws QuantityMeasurementException {
         if ((quantityMeasurementDTO.firstUnit.equals(UnitType.FARHANHIT)
                 || quantityMeasurementDTO.firstUnit.equals(UnitType.CELCIUS)) && quantityMeasurementDTO.firstUnit.unitType.equals(quantityMeasurementDTO.secondUnit.unitType)) {
@@ -22,6 +23,7 @@ public class Conversion {
         throw new QuantityMeasurementException("Invalid Unit Type");
     }
 
+    @Override
     public List getEnum(String unitType) {
         List<UnitType> collect = Arrays.stream(UnitType.values())
                 .filter(enumValues -> enumValues.unitType.equals(unitType))
@@ -29,6 +31,7 @@ public class Conversion {
         return collect;
     }
 
+    @Override
     public List getUnit() {
         List<String> unit = Arrays.stream(UnitType.values())
                 .map(listOfUnit -> listOfUnit.unitType)
@@ -37,5 +40,4 @@ public class Conversion {
 
         return unit;
     }
-
 }
