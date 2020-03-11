@@ -2,7 +2,6 @@ package com.bridgelabz.quantitymeasurement.dto;
 
 import com.bridgelabz.quantitymeasurement.service.UnitType;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 

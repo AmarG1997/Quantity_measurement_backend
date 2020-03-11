@@ -24,11 +24,14 @@ public class UnitConversion implements IUnitConversion {
     }
 
     @Override
-    public List getEnum(String unitType) {
+    public List getEnum(String unitType) throws QuantityMeasurementException {
         List<UnitType> collect = Arrays.stream(UnitType.values())
                 .filter(enumValues -> enumValues.unitType.equals(unitType))
                 .collect(Collectors.toList());
-        return collect;
+        if (collect.size()>0) {
+            return collect;
+        }
+        throw new QuantityMeasurementException("Unit Type Not Available");
     }
 
     @Override

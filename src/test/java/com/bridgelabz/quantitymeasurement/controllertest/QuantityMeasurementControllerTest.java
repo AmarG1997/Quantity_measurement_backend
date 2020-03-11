@@ -1,6 +1,7 @@
 package com.bridgelabz.quantitymeasurement.controllertest;
 
 import com.bridgelabz.quantitymeasurement.dto.QuantityMeasurementDTO;
+import com.bridgelabz.quantitymeasurement.exception.QuantityMeasurementException;
 import com.bridgelabz.quantitymeasurement.service.UnitConversion;
 import com.bridgelabz.quantitymeasurement.service.UnitType;
 import com.google.gson.Gson;
@@ -53,13 +54,13 @@ public class QuantityMeasurementControllerTest {
 
     @Test
     void whenGivenDifferentUnitType_shouldReturnException() throws Exception {
-        quantityMeasurementDTO=new QuantityMeasurementDTO(2.0,UnitType.INCH,UnitType.FARHANHIT);
+        quantityMeasurementDTO = new QuantityMeasurementDTO(2.0, UnitType.INCH, UnitType.FARHANHIT);
         String jsonDto = gson.toJson(quantityMeasurementDTO);
         when(unitConverter.getConvert(quantityMeasurementDTO)).thenReturn(2.0);
         MvcResult mvcResult = this.mockMvc.perform(post("/unit/convert").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
-        Assert.assertEquals(400,status);
+        Assert.assertEquals(400, status);
     }
 
     @Test
@@ -92,5 +93,15 @@ public class QuantityMeasurementControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(404, status);
+    }
+
+    @Test
+    void givenABadRequest_thenReturnBadStatusCode() throws Exception {
+        try {
+            this.mockMvc.perform(get("/unit/subUnit/LENGT")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        } catch (QuantityMeasurementException e) {
+            Assert.assertEquals(QuantityMeasurementException.ExceptionType.UNIT_TYPE_NOT_AVAILABLE, e.getMessage());
+        }
     }
 }

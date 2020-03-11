@@ -10,7 +10,7 @@ public interface IUnitConversion {
 
     double getConvert(QuantityMeasurementDTO quantityMeasurementDTO) throws QuantityMeasurementException;
 
-    List getEnum(String unitType);
+    List getEnum(String unitType) throws QuantityMeasurementException;
 
     List getUnit();
 }
